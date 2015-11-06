@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="scenejs.js"></script>
+    <script src="keymaster.js"></script>
+</head>
+<body>
+<script>
+// Using the "import/obj" node to import a raptor mesh from .OBJ format
+// Internally, the node uses the K3D library for parsing - http://k3d.ivank.net/
+
+// Point SceneJS to the bundled plugins
+SceneJS.setConfigs({
+    pluginPath: "../plugins"
+});
+
+// Create a scene
+var scene = SceneJS.createScene({
+    nodes: [
+
+        // Mouse-orbited camera,implemented by plugin at
+        // http://scenejs.org/api/latest/plugins/node/cameras/orbit.js
+        {
+            type: "cameras/orbit",
+            yaw: -40,
+            pitch: -20,
+            zoom: 200,
+            zoomSensitivity: 20.0,
+
+            nodes: [
+
+                // Move the raptor a bit to centre it
+                {
+                    id: "myMaterial",
+                    type: "translate", y: -30, z: -20,
+                    nodes: [
+                        {
+                            type: "texture",
+                            src: "models/obj/raptor.jpg",
+
+                            nodes:[
+                            {
+                                type:"rotate",
+                                id:"myRotate",
+                                y:1.0,
+                                angle:0,
+
+                                nodes: [
+                                    {
+                                        type: "import/obj",
+                                        src: "models/obj/raptor.obj"
+                                    }
+                                ]
+                            }
+                        ]
+                        },
+                        {
+                            type:"skybox/violentDays",
+                            size:5000 // Box half-size on each axis - default is 5000
+                        },
+                    ],
+                }
+            ]
+        }
+    ]
+});
+var rotate = true;
+scene.getNode("myRotate", function (myRotate) {
+
+    var angle = 0;
+
+    scene.on("tick", function () {
+        if (rotate) {
+            // myRotate.setAngle(angle += 0.5);
+        }
+    });
+});
+
+var canvas = scene.getCanvas();
+
+var translate = -200;
+var x = 0;
+var y = 0;
+var angle = 0;
+key('c', function(){
+    scene.getNode("myRotate", function (myRotate) {
+        myRotate.setAngle(angle += 90);
+    });
+});
+canvas.addEventListener('mousedown', function() {
+    scene.getNode("myRotate", function (myRotate) {
+        myRotate.setAngle(angle += 90);
+    });
+    // rotate = !rotate;
+    // scene.addNode({
+    //     type: "translate", z: translate, x: x, y: y,
+    //     nodes: [
+    //         {
+    //             type: "geometry/teapot"
+    //         }
+    //     ],
+    // });
+    // scene.getNode("myMaterial", function(myMaterial) {
+    //     myMaterial.addNode({
+    //         type: "translate", z: translate, x: x, y: y,
+    //         nodes: [
+    //             // {
+    //             //     type: "geometry/teapot"
+    //             // }
+    //             {
+    //                 type: "texture",
+    //                 src: "models/obj/raptor.jpg",
+
+    //                 nodes:[
+    //                 {
+    //                     type: "import/obj",
+    //                     src: "models/obj/raptor.obj"
+    //                 }
+    //                 ]
+    //             }
+    //         ],
+    //     });
+    // });
+    translate += 20;
+    x += 5;
+    y += 5;
+}, true);
+
+</script>
+</body>
+</html>
