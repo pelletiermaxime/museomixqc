@@ -6,6 +6,47 @@
     <script src="keymaster.js"></script>
 </head>
 <body>
+	<style>
+		body  { border: 0; margin: 0; overflow: hidden;  }
+		video {  display: block; margin: 0; width:100%; height: auto; }
+	</style>
+
+	<video id="video" width="1920" autoplay></video>
+
+	<script>
+
+		// Put event listeners into place
+		window.addEventListener("DOMContentLoaded", function() {
+			// Grab elements, create settings, etc.
+				video = document.getElementById("video"),
+				videoObj = { "video": true },
+				errBack = function(error) {
+					console.log("Video capture error: ", error.code); 
+				};
+
+			// Put video listeners into place
+			if(navigator.getUserMedia) { // Standard
+				navigator.getUserMedia(videoObj, function(stream) {
+					video.src = stream;
+					video.play();
+				}, eorrBack);
+			} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+				navigator.webkitGetUserMedia(videoObj, function(stream){
+					video.src = window.webkitURL.createObjectURL(stream);
+					video.play();
+				}, errBack);
+			} else if(navigator.mozGetUserMedia) { // WebKit-prefixed
+				navigator.mozGetUserMedia(videoObj, function(stream){
+					video.src = window.URL.createObjectURL(stream);
+					video.play();
+				}, errBack);
+			}
+
+		}, false);
+
+	</script>
+
+
 <script>
 // Using the "import/obj" node to import a raptor mesh from .OBJ format
 // Internally, the node uses the K3D library for parsing - http://k3d.ivank.net/
@@ -17,6 +58,8 @@ SceneJS.setConfigs({
 
 // Create a scene
 var scene = SceneJS.createScene({
+    
+    transparent: true,
     nodes: [
 
         // Mouse-orbited camera,implemented by plugin at
@@ -55,11 +98,7 @@ var scene = SceneJS.createScene({
                             }
                         ]
                         },
-                        {
-                            type:"skybox/violentDays",
-                            size:5000 // Box half-size on each axis - default is 5000
-                        },
-                    ],
+                                           ],
                 }
             ]
         }
@@ -72,7 +111,7 @@ scene.getNode("myRotate", function (myRotate) {
 
     scene.on("tick", function () {
         if (rotate) {
-            // myRotate.setAngle(angle += 0.5);
+           //  myRotate.setAngle(angle += 0.5);
         }
     });
 });
@@ -101,27 +140,27 @@ canvas.addEventListener('mousedown', function() {
     //         }
     //     ],
     // });
-    // scene.getNode("myMaterial", function(myMaterial) {
-    //     myMaterial.addNode({
-    //         type: "translate", z: translate, x: x, y: y,
-    //         nodes: [
-    //             // {
-    //             //     type: "geometry/teapot"
-    //             // }
-    //             {
-    //                 type: "texture",
-    //                 src: "models/obj/raptor.jpg",
+     scene.getNode("myMaterial", function(myMaterial) {
+         myMaterial.addNode({
+             type: "translate", z: translate, x: x, y: y,
+             nodes: [
+                 // {
+                 //     type: "geometry/teapot"
+                 // }
+                 {
+                     type: "texture",
+                     src: "models/obj/raptor.jpg",
 
-    //                 nodes:[
-    //                 {
-    //                     type: "import/obj",
-    //                     src: "models/obj/raptor.obj"
-    //                 }
-    //                 ]
-    //             }
-    //         ],
-    //     });
-    // });
+                     nodes:[
+                     {
+                         type: "import/obj",
+                         src: "models/obj/raptor.obj"
+                     }
+                     ]
+                 }
+             ],
+         });
+     });
     translate += 20;
     x += 5;
     y += 5;
