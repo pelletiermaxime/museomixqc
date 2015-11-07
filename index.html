@@ -147,6 +147,24 @@ var scene = SceneJS.createScene({
     ]
 });
 
+// Interaction events
+
+//
+
+var canvas = scene.getCanvas();
+
+var translate = -200;
+var x = 0;
+var y = 0;
+var angle = 0;
+key('c', function(){
+    scene.getNode("myRotate", function (myRotate) {
+        myRotate.setAngle(angle += 0.5);
+    });
+});
+
+
+
 </script>
 </body>
 </html>
