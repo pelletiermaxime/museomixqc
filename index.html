@@ -147,6 +147,55 @@ var scene = SceneJS.createScene({
     ]
 });
 
+// Make a scene
+var scene2 = SceneJS.createScene({
+    
+    transparent: true,
+    nodes: [
+
+        // Mouse-orbited camera,implemented by plugin at
+        // http://scenejs.org/api/latest/plugins/node/cameras/orbit.js
+        {
+            type: "cameras/orbit",
+            yaw: -10,
+            pitch: -270,
+            zoom: 5300,
+            zoomSensitivity: 20.0,
+
+            nodes: [
+
+                // Move the raptor a bit to centre it
+                {
+                    id: "myMaterial",
+                    type: "translate", y: -1005, z: 205, x: -105,
+                    nodes: [
+                        {
+                            type: "texture",
+                            src: "models/obj/GutembergDecimate.bmp",
+
+                            nodes:[
+                            {
+                                type:"rotate",
+                                id:"myRotate",
+                                y:1.0,
+                                angle:170,
+
+                                nodes: [
+                                    {
+                                        type: "import/obj",
+                                        src: "models/obj/GutembergDecimate.obj"
+                                    }
+                                ]
+                            }
+                        ]
+                        },
+                                           ],
+                }
+            ]
+        }
+    ]
+});
+
 // Interaction events
 
 //
