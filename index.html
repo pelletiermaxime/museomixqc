@@ -11,9 +11,15 @@
 		video {  display: block; margin: 0; width:100%; height: auto; }
 	</style>
 
-	<video id="video" width="1920" autoplay></video>
+	<video id="video" width="1920" height="1080" autoplay style="display: none"></video>
+    <canvas id="bc" width="1920" height="1080"  style="display: block;position: absolute; width: 100%; height: auto;left: 0;top:0;z-index:0"></canvas>
+    <canvas id="fc" width="1920" height="1080"  style="display: block;position: absolute; width: 100%; height: auto;left: 0;top:0;z-index:999"></canvas>
 
 	<script>
+
+        // Preload mask image
+        mask_image = new Image();
+        mask_image.src = 'img/video_mask.png';
 
 		// Put event listeners into place
 		window.addEventListener("DOMContentLoaded", function() {
@@ -43,6 +49,41 @@
 			}
 
 		}, false);
+
+
+        document.addEventListener('DOMContentLoaded', function(){
+            var v = document.getElementById('video');
+            var fcanvas = document.getElementById('fc');
+            var bcanvas = document.getElementById('bc');
+            var fc = fcanvas.getContext('2d');
+            var bc = bcanvas.getContext('2d');
+
+
+            v.addEventListener('play', function(){
+                draw();
+            },false);
+
+            function draw() {
+                if(v.paused || v.ended) return false;
+                fc.drawImage(v,0,0, 1920, 1080);
+                fc.globalCompositeOperation = 'destination-out';
+
+                fc.beginPath();
+                fc.moveTo(0, 0);
+                fc.lineTo(1920,0);
+                fc.lineTo(1920, 500);
+                fc.lineTo(0, 500);
+                fc.closePath();
+                fc.fill();
+                fc.globalCompositeOperation = 'source-over'
+                
+                bc.drawImage(v,0,0, 1920, 1080);
+
+                window.requestAnimationFrame(draw);
+            }
+
+        },false);
+
 
 	</script>
 
