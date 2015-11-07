@@ -66,10 +66,12 @@
                 fc.globalCompositeOperation = 'destination-out';
 
                 fc.beginPath();
-                fc.moveTo(0, 0);
+                fc.moveTo(353, 0);
                 fc.lineTo(1920,0);
                 fc.lineTo(1920, 500);
-                fc.lineTo(0, 500);
+                fc.lineTo(900, 760);
+		fc.lineTo(895, 785);
+                fc.lineTo(355, 960);
                 fc.closePath();
                 fc.fill();
                 fc.globalCompositeOperation = 'source-over'
@@ -99,8 +101,8 @@ var scene = SceneJS.createScene({
         // http://scenejs.org/api/latest/plugins/node/cameras/orbit.js
         {
             type: "cameras/orbit",
-            yaw: -40,
-            pitch: -20,
+            yaw: -180,
+            pitch: 0,
             zoom: 200,
             zoomSensitivity: 20.0,
 
@@ -109,7 +111,7 @@ var scene = SceneJS.createScene({
                 // Move the raptor a bit to centre it
                 {
                     id: "myMaterial",
-                    type: "translate", y: -30, z: -20,
+                    type: "translate", y: -60, z: -5, x: 25,
                     nodes: [
                         {
                             type: "texture",
@@ -137,67 +139,6 @@ var scene = SceneJS.createScene({
         }
     ]
 });
-var rotate = true;
-scene.getNode("myRotate", function (myRotate) {
-
-    var angle = 0;
-
-    scene.on("tick", function () {
-        if (rotate) {
-           //  myRotate.setAngle(angle += 0.5);
-        }
-    });
-});
-
-var canvas = scene.getCanvas();
-
-var translate = -200;
-var x = 0;
-var y = 0;
-var angle = 0;
-key('c', function(){
-    scene.getNode("myRotate", function (myRotate) {
-        myRotate.setAngle(angle += 90);
-    });
-});
-canvas.addEventListener('mousedown', function() {
-    scene.getNode("myRotate", function (myRotate) {
-        myRotate.setAngle(angle += 90);
-    });
-    // rotate = !rotate;
-    // scene.addNode({
-    //     type: "translate", z: translate, x: x, y: y,
-    //     nodes: [
-    //         {
-    //             type: "geometry/teapot"
-    //         }
-    //     ],
-    // });
-     scene.getNode("myMaterial", function(myMaterial) {
-         myMaterial.addNode({
-             type: "translate", z: translate, x: x, y: y,
-             nodes: [
-                 // {
-                 //     type: "geometry/teapot"
-                 // }
-                 {
-                     type: "texture",
-                     src: "models/obj/raptor.jpg",
-
-                     nodes:[
-                     {
-                         type: "import/obj",
-                         src: "models/obj/raptor.obj"
-                     }
-                     ]
-                 }
-             ],
-         });
-     });
-    translate += 20;
-    x += 5;
-    y += 5;
-}, true);
 
 </script>
 </body>
