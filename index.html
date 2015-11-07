@@ -12,22 +12,75 @@
 		video {  display: block; margin: 0; width:50%; height: auto; }
 	</style>
 
-	<video id="webCamWindow" autoplay></video>
+	<video id="video" width="1920" height="1080" autoplay style="display: none"></video>
+    <canvas id="bc" width="1920" height="1080"  style="display: block;position: absolute; width: 100%; height: auto;left: 0;top:0;z-index:0"></canvas>
+    <canvas id="fc" width="1920" height="1080"  style="display: block;position: absolute; width: 100%; height: auto;left: 0;top:0;z-index:999"></canvas>
 
-		 <script type="text/javascript" src="js/global.js"></script>
-                <script type="text/javascript" src="js/MotionDetector/WebCamCapture.js"></script>
-                <script type="text/javascript" src="js/MotionDetector/ImageCompare.js"></script>
-                <script type="text/javascript" src="js/MotionDetector/Core.js"></script>
-                <script type="text/javascript" src="js/main.js"></script>
+	<script>
 
-                <canvas id="c" width="640" height="480" style="position:absolute;top:0; left:0"></canvas>
+		// Put event listeners into place
+		window.addEventListener("DOMContentLoaded", function() {
+			// Grab elements, create settings, etc.
+				video = document.getElementById("video"),
+				videoObj = { "video": true },
+				errBack = function(error) {
+					console.log("Video capture error: ", error.code); 
+				};
 
-                <script type="text/javascript">
-                        var tCanvas = document.getElementById("c");
-                </script>
+			// Put video listeners into place
+			if(navigator.getUserMedia) { // Standard
+				navigator.getUserMedia(videoObj, function(stream) {
+					video.src = stream;
+					video.play();
+				}, eorrBack);
+			} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+				navigator.webkitGetUserMedia(videoObj, function(stream){
+					video.src = window.webkitURL.createObjectURL(stream);
+					video.play();
+				}, errBack);
+			} else if(navigator.mozGetUserMedia) { // WebKit-prefixed
+				navigator.mozGetUserMedia(videoObj, function(stream){
+					video.src = window.URL.createObjectURL(stream);
+					video.play();
+				}, errBack);
+			}
 
-	
-<script>
+		}, false);
+
+
+        document.addEventListener('DOMContentLoaded', function(){
+            var v = document.getElementById('video');
+            var fcanvas = document.getElementById('fc');
+            var bcanvas = document.getElementById('bc');
+            var fc = fcanvas.getContext('2d');
+            var bc = bcanvas.getContext('2d');
+
+
+            v.addEventListener('play', function(){
+                draw();
+            },false);
+
+            function draw() {
+                if(v.paused || v.ended) return false;
+                fc.drawImage(v,0,0, 1920, 1080);
+                fc.globalCompositeOperation = 'destination-out';
+
+                fc.beginPath();
+                fc.moveTo(0, 0);
+                fc.lineTo(1920,0);
+                fc.lineTo(1920, 500);
+                fc.lineTo(0, 500);
+                fc.closePath();
+                fc.fill();
+                fc.globalCompositeOperation = 'source-over'
+                
+                bc.drawImage(v,0,0, 1920, 1080);
+
+                window.requestAnimationFrame(draw);
+            }
+
+        },false);
+
 // Using the "import/obj" node to import a raptor mesh from .OBJ format
 // Internally, the node uses the K3D library for parsing - http://k3d.ivank.net/
 
@@ -145,29 +198,6 @@ canvas.addEventListener('mousedown', function() {
     x += 5;
     y += 5;
 }, true);
-
-var videoInput = document.getElementById('video');
-//var canvasInput = document.getElementById('inputCanvas');
-var canvasInput = scene.getCanvas();
-
-//var htracker = new headtrackr.Tracker();
-var htracker = new headtrackr.Tracker({altVideo : {ogv : "./media/capture5.ogv", mp4 : "./media/capture5.mp4"}, calcAngles : true, ui : false, headPosition : false, debug : debugOverlay});
-htracker.init(videoInput, canvasInput);
-htracker.start();
-
-document.addEventListener("facetrackingEvent", function( event ) {
-    // clear canvas
-    overlayContext.clearRect(0,0,320,240);
-    // once we have stable tracking, draw rectangle
-    if (event.detection == "CS") {
-        overlayContext.translate(event.x, event.y)
-        overlayContext.rotate(event.angle-(Math.PI/2));
-        overlayContext.strokeStyle = "#00CC00";
-        overlayContext.strokeRect((-(event.width/2)) >> 0, (-(event.height/2)) >> 0, event.width, event.height);
-        overlayContext.rotate((Math.PI/2)-event.angle);
-        overlayContext.translate(-event.x, -event.y);
-    }
-});
 
 </script>
 </body>
