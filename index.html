@@ -192,8 +192,10 @@ scenes.push(SceneJS.createScene({
     ]
 }));
 
-// Make a scene
-   scenes.push(SceneJS.createScene({
+
+
+// Nouveau gutemberg
+scenes.push(SceneJS.createScene({
     
     transparent: true,
     nodes: [
@@ -211,83 +213,172 @@ scenes.push(SceneJS.createScene({
 
                 // Move the raptor a bit to centre it
                 {
-                    id: "myMaterial",
-                    type: "translate", y: -1005, z: 1405, x: -405,
-                    nodes: [
-                        {
-                            type: "texture",
-                            src: "models/obj/GutembergDecimate.bmp",
-
-                            nodes:[
+                    type:"lights",
+                        id:"myLights", // So we can reference this lights node
+                        lights:[
                             {
-                                type:"rotate",
-                                id:"myRotate",
-                                y:1.0,
-                                angle:170,
+                                mode:"dir",
+                                color:{ r:1.0, g:1.0, b:1.0 },
+                                diffuse:true,
+                                specular:true,
+                                dir:{ x:-0.5, y:-0.5, z:-0.5 },
+                                space:"world"
+                            },
+                            {
+                                mode:"ambient",
+                                color:{ r:0.6, g:0.6, b:1.0 },
+                                specular: true
+                            },
+                             {
+                                mode:"ambient",
+                                color:{ r:1.0, g:0.6, b:0.6 }
+                            },
+                             {
+                                mode:"ambient",
+                                color:{ r:1.0, g:1.0, b:1.0 }
+                            },
+                            {
+                                mode:"dir",
+                                color:{ r:1.0, g:1.0, b:1.0 },
+                                diffuse:true,
+                                specular:true,
+                                dir:{ x:-0.5, y:-0.6, z:-0.5 },
+                                space:"world"
+                            },
+                        ],
+                        nodes:[
+                        {
+                            id: "myMaterial",
+                            type: "translate", y: -1005, z: 1405, x: -405,
+                            //color:{ r:1.0, g:1.0, b:1.0 },
+                            //specularColor:{ r:1.0, g:1.0, b:1.0 },
+                            specular:1.0,
+                            shine:70.0,
+                            emit:20,
+                            alpha:1.0,
+                            nodes: [
+                                {
+                                    type: "texture",
+                                    src: "models/obj/GutembergDecimate.bmp",
 
-                                nodes: [
+                                    nodes:[
                                     {
-                                        type: "import/obj",
-                                        src: "models/obj/GutembergDecimate.obj"
+                                        type:"rotate",
+                                        id:"myRotate",
+                                        y:1.0,
+                                        angle:170,
+
+                                        nodes: [
+                                            {
+                                                type: "import/obj",
+                                                src: "models/obj/GutembergDecimate.obj"
+                                            }
+                                        ]
                                     }
-                                ]
-                            }
-                        ]
-                        },
-                                           ],
-                }
+                                    ]
+                                },
+                            ],
+                        }
+                ]
+            }
             ]
         }
     ]
 }));
 
-   scenes.push(SceneJS.createScene({
+
+// Nouveau bestiere
+scenes.push(SceneJS.createScene({
     
     transparent: true,
     nodes: [
 
         // Mouse-orbited camera,implemented by plugin at
         // http://scenejs.org/api/latest/plugins/node/cameras/orbit.js
-            {
-                type: "cameras/orbit",
-                yaw: -10,
-                pitch: -270,
-                zoom: 5300,
-                zoomSensitivity: 20.0,
+        {
+            type: "cameras/orbit",
+            yaw: -10,
+            pitch: -270,
+            zoom: 5300,
+            zoomSensitivity: 20.0,
 
-                nodes: [
+            nodes: [
 
-                    // Move the raptor a bit to centre it
-                    {
-                        id: "myMaterial",
-                        type: "translate", y: -1005, z: 1405, x: -305,
-                        nodes: [
+                // Move the raptor a bit to centre it
+                {
+                    type:"lights",
+                        id:"myLights", // So we can reference this lights node
+                        lights:[
                             {
-                                type: "texture",
-                                src: "models/obj/bestiaireLR-aligned.bmp",
-
-                                nodes:[
-                                {
-                                    type:"rotate",
-                                    id:"myRotate",
-                                    y:1.0,
-                                    angle:170,
-
-                                    nodes: [
-                                        {
-                                            type: "import/obj",
-                                            src: "models/obj/bestiaireLR-aligned.obj"
-                                        }
-                                    ]
-                                }
-                            ]
+                                mode:"dir",
+                                color:{ r:1.0, g:1.0, b:1.0 },
+                                diffuse:true,
+                                specular:true,
+                                dir:{ x:-0.5, y:-0.5, z:-0.5 },
+                                space:"world"
                             },
-                                               ],
-                    }
+                            {
+                                mode:"ambient",
+                                color:{ r:0.6, g:0.6, b:1.0 },
+                                specular: true
+                            },
+                             {
+                                mode:"ambient",
+                                color:{ r:1.0, g:0.6, b:0.6 }
+                            },
+                             {
+                                mode:"ambient",
+                                color:{ r:1.0, g:1.0, b:1.0 }
+                            },
+                            {
+                                mode:"dir",
+                                color:{ r:1.0, g:1.0, b:1.0 },
+                                diffuse:true,
+                                specular:true,
+                                dir:{ x:-0.5, y:-0.6, z:-0.5 },
+                                space:"world"
+                            },
+                        ],
+                        nodes:[
+                        {
+                            id: "myMaterial",
+                            type: "translate", y: -1005, z: 1405, x: -405,
+                            //color:{ r:1.0, g:1.0, b:1.0 },
+                            //specularColor:{ r:1.0, g:1.0, b:1.0 },
+                            specular:1.0,
+                            shine:70.0,
+                            emit:20,
+                            alpha:1.0,
+                            nodes: [
+                                {
+                                    type: "texture",
+                                    src: "models/obj/bestiaireLR-aligned.bmp",
+
+                                    nodes:[
+                                    {
+                                        type:"rotate",
+                                        id:"myRotate",
+                                        y:1.0,
+                                        angle:170,
+
+                                        nodes: [
+                                            {
+                                                type: "import/obj",
+                                                src: "models/obj/bestiaireLR-aligned.obj"
+                                            }
+                                        ]
+                                    }
+                                    ]
+                                },
+                            ],
+                        }
                 ]
             }
+            ]
+        }
     ]
 }));
+
 
 // Interaction events
 var translate = -200;
