@@ -191,7 +191,7 @@ scenes.push(SceneJS.createScene({
         }
     ]
 }));
-/*
+
 // Make a scene
    scenes.push(SceneJS.createScene({
     
@@ -212,7 +212,7 @@ scenes.push(SceneJS.createScene({
                 // Move the raptor a bit to centre it
                 {
                     id: "myMaterial",
-                    type: "translate", y: -1005, z: 205, x: -105,
+                    type: "translate", y: -1005, z: 1405, x: -405,
                     nodes: [
                         {
                             type: "texture",
@@ -248,47 +248,47 @@ scenes.push(SceneJS.createScene({
 
         // Mouse-orbited camera,implemented by plugin at
         // http://scenejs.org/api/latest/plugins/node/cameras/orbit.js
-        {
-            type: "cameras/orbit",
-            yaw: -10,
-            pitch: -270,
-            zoom: 5300,
-            zoomSensitivity: 20.0,
+            {
+                type: "cameras/orbit",
+                yaw: -10,
+                pitch: -270,
+                zoom: 5300,
+                zoomSensitivity: 20.0,
 
-            nodes: [
+                nodes: [
 
-                // Move the raptor a bit to centre it
-                {
-                    id: "myMaterial",
-                    type: "translate", y: -1005, z: 205, x: -105,
-                    nodes: [
-                        {
-                            type: "texture",
-                            src: "models/obj/bestiaireLR-aligned.bmp",
-
-                            nodes:[
+                    // Move the raptor a bit to centre it
+                    {
+                        id: "myMaterial",
+                        type: "translate", y: -1005, z: 1405, x: -305,
+                        nodes: [
                             {
-                                type:"rotate",
-                                id:"myRotate",
-                                y:1.0,
-                                angle:170,
+                                type: "texture",
+                                src: "models/obj/bestiaireLR-aligned.bmp",
 
-                                nodes: [
-                                    {
-                                        type: "import/obj",
-                                        src: "models/obj/bestiaireLR-aligned.obj"
-                                    }
-                                ]
-                            }
-                        ]
-                        },
-                                           ],
-                }
-            ]
-        }
+                                nodes:[
+                                {
+                                    type:"rotate",
+                                    id:"myRotate",
+                                    y:1.0,
+                                    angle:170,
+
+                                    nodes: [
+                                        {
+                                            type: "import/obj",
+                                            src: "models/obj/bestiaireLR-aligned.obj"
+                                        }
+                                    ]
+                                }
+                            ]
+                            },
+                                               ],
+                    }
+                ]
+            }
     ]
 }));
-*/
+
 // Interaction events
 var translate = -200;
 var x = 0;
