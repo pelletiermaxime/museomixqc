@@ -3,6 +3,7 @@
 <head>
     <title></title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//js.pusher.com/3.0/pusher.min.js"></script>
     <script type="text/javascript" src="scenejs.js"></script>
     <script src="keymaster.js"></script>
 </head>
@@ -305,8 +306,56 @@ key('c', function(){
     
 });
 
+function showRandomCanvas() {
+    console.log('showRandomCanvas');
+    hideAllCanvas();
+    var randomCanvas = Math.floor(Math.random() * 3) + 1;
+    $('#canvas-' + randomCanvas).fadeIn(2000);
+}
 
+function hideAllCanvas() {
+    $('#canvas-1').fadeOut();
+    $('#canvas-2').fadeOut();
+    $('#canvas-3').fadeOut();
+}
 
+var intervalSwitchCanvas;
+var timeoutSwitchCanvas;
+
+var pusher = new Pusher('765ec374ae0a69f4ce44', {
+	wsHost: "museomixqc.local",
+	wsPort: "8181",
+	wssPort: "8181",
+	enabledTransports: ['ws'],
+	log: function(data) {
+		console.log('\t\t', data)
+	}
+});
+var firstShowCanvas = true;
+var channel = pusher.subscribe('movement');
+channel.bind('movement-detected', function(data) {
+    console.log('Movement detected!');
+    
+    if (firstShowCanvas == true) {    
+        console.log('firstShowCanvas');
+	showRandomCanvas();
+        firstShowCanvas = false;
+    
+        console.log('Start interval switch random');
+        clearInterval(intervalSwitchCanvas);
+        intervalSwitchCanvas = setInterval(function () {
+            showRandomCanvas();
+        }, 30000);
+    }
+
+    clearTimeout(timeoutSwitchCanvas);
+    timeoutSwitchCanvas = setTimeout(function() {
+        console.log('Hide canvas due to inactivity');
+        hideAllCanvas();
+        clearInterval(intervalSwitchCanvas);
+        firstShowCanvas = true;
+    }, 30000);
+});
 </script>
 </body>
 </html>
