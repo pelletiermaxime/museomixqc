@@ -14,7 +14,7 @@
 
 	<video id="video" width="1920" height="1080" autoplay style="display: none"></video>
     <canvas id="bc" width="1920" height="1080"  style="display: block;position: absolute; width: 100%; height: auto;left: 0;top:0;z-index:0"></canvas>
-    <canvas id="fc" width="1920" height="1080"  style="display: block;position: absolute; width: 100%; height: auto;left: 0;top:0;z-index:999"></canvas>
+    <canvas id="fc" width="1920" height="1080"  style="display: block;position: absolute; width: 100%; height: auto;left: 0;top:0;z-index:999 display:none;"></canvas>
 
 	<script>
 
@@ -110,8 +110,8 @@ scenes.push(SceneJS.createScene({
         // http://scenejs.org/api/latest/plugins/node/cameras/orbit.js
         {
             type: "cameras/orbit",
-            yaw: -10,
-            pitch: -10,
+            yaw: -20,
+            pitch: 10,
             zoom: 2000,
             zoomSensitivity: 20.0,
 
@@ -155,7 +155,7 @@ scenes.push(SceneJS.createScene({
                         nodes:[
                         {
                             id: "myMaterial",
-                            type: "translate", y: -360, z: -5, x: -225,
+                            type: "translate", y: -460, z: -5, x: -225,
                             //color:{ r:1.0, g:1.0, b:1.0 },
                             //specularColor:{ r:1.0, g:1.0, b:1.0 },
                             specular:1.0,
@@ -191,7 +191,7 @@ scenes.push(SceneJS.createScene({
         }
     ]
 }));
-
+/*
 // Make a scene
    scenes.push(SceneJS.createScene({
     
@@ -288,7 +288,7 @@ scenes.push(SceneJS.createScene({
         }
     ]
 }));
-
+*/
 // Interaction events
 var translate = -200;
 var x = 0;
