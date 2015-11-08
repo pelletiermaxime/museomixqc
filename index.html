@@ -9,7 +9,6 @@
 <body>
 	<style>
 		body  { border: 0; margin: 0; overflow: hidden;  }
-		video {  display: block; margin: 0; width:50%; height: auto; }
 	</style>
 
 	<video id="video" width="1920" height="1080" autoplay style="display: none"></video>
@@ -17,6 +16,8 @@
     <canvas id="fc" width="1920" height="1080"  style="display: block;position: absolute; width: 100%; height: auto;left: 0;top:0;z-index:999"></canvas>
 
 	<script>
+
+    var scenes= Array();
 
 		// Put event listeners into place
 		window.addEventListener("DOMContentLoaded", function() {
@@ -75,7 +76,7 @@
                 fc.lineTo(1920,0);
                 fc.lineTo(1920, 500);
                 fc.lineTo(900, 760);
-		fc.lineTo(895, 785);
+		        fc.lineTo(895, 785);
                 fc.lineTo(355, 960);
                 fc.closePath();
                 fc.fill();
@@ -99,7 +100,7 @@ SceneJS.setConfigs({
 });
 
 // Create a scene
-var scene = SceneJS.createScene({
+scenes.push(SceneJS.createScene({
     
     transparent: true,
     nodes: [
@@ -117,38 +118,81 @@ var scene = SceneJS.createScene({
 
                 // Move the raptor a bit to centre it
                 {
-                    id: "myMaterial",
-                    type: "translate", y: -60, z: -5, x: 25,
-                    nodes: [
-                        {
-                            type: "texture",
-                            src: "models/obj/statueLR.bmp",
-
-                            nodes:[
+                    type:"lights",
+                        id:"myLights", // So we can reference this lights node
+                        lights:[
                             {
-                                type:"rotate",
-                                id:"myRotate",
-                                y:1.0,
-                                angle:0,
+                                mode:"dir",
+                                color:{ r:1.0, g:1.0, b:1.0 },
+                                diffuse:true,
+                                specular:true,
+                                dir:{ x:-0.5, y:-0.5, z:-0.5 },
+                                space:"world"
+                            },
+                            {
+                                mode:"ambient",
+                                color:{ r:0.6, g:0.6, b:1.0 },
+                                specular: true
+                            },
+                             {
+                                mode:"ambient",
+                                color:{ r:1.0, g:0.6, b:0.6 }
+                            },
+                             {
+                                mode:"ambient",
+                                color:{ r:1.0, g:1.0, b:1.0 }
+                            },
+                            {
+                                mode:"dir",
+                                color:{ r:1.0, g:1.0, b:1.0 },
+                                diffuse:true,
+                                specular:true,
+                                dir:{ x:-0.5, y:-0.6, z:-0.5 },
+                                space:"world"
+                            },
+                        ],
+                        nodes:[
+                        {
+                            id: "myMaterial",
+                            type: "translate", y: -60, z: -5, x: 25,
+                            //color:{ r:1.0, g:1.0, b:1.0 },
+                            //specularColor:{ r:1.0, g:1.0, b:1.0 },
+                            specular:1.0,
+                            shine:70.0,
+                            emit:20,
+                            alpha:1.0,
+                            nodes: [
+                                {
+                                    type: "texture",
+                                    src: "models/obj/statueLR.bmp",
 
-                                nodes: [
+                                    nodes:[
                                     {
-                                        type: "import/obj",
-                                        src: "models/obj/statueLR.obj"
+                                        type:"rotate",
+                                        id:"myRotate",
+                                        y:1.0,
+                                        angle:0,
+
+                                        nodes: [
+                                            {
+                                                type: "import/obj",
+                                                src: "models/obj/statueLR.obj"
+                                            }
+                                        ]
                                     }
-                                ]
-                            }
-                        ]
-                        },
-                                           ],
-                }
+                                    ]
+                                },
+                            ],
+                        }
+                ]
+            }
             ]
         }
     ]
-});
+}));
 
 // Make a scene
-var scene2 = SceneJS.createScene({
+   scenes.push(SceneJS.createScene({
     
     transparent: true,
     nodes: [
@@ -194,22 +238,71 @@ var scene2 = SceneJS.createScene({
             ]
         }
     ]
-});
+}));
+
+   scenes.push(SceneJS.createScene({
+    
+    transparent: true,
+    nodes: [
+
+        // Mouse-orbited camera,implemented by plugin at
+        // http://scenejs.org/api/latest/plugins/node/cameras/orbit.js
+        {
+            type: "cameras/orbit",
+            yaw: -10,
+            pitch: -270,
+            zoom: 5300,
+            zoomSensitivity: 20.0,
+
+            nodes: [
+
+                // Move the raptor a bit to centre it
+                {
+                    id: "myMaterial",
+                    type: "translate", y: -1005, z: 205, x: -105,
+                    nodes: [
+                        {
+                            type: "texture",
+                            src: "models/obj/bestiaireLR-aligned.bmp",
+
+                            nodes:[
+                            {
+                                type:"rotate",
+                                id:"myRotate",
+                                y:1.0,
+                                angle:170,
+
+                                nodes: [
+                                    {
+                                        type: "import/obj",
+                                        src: "models/obj/bestiaireLR-aligned.obj"
+                                    }
+                                ]
+                            }
+                        ]
+                        },
+                                           ],
+                }
+            ]
+        }
+    ]
+}));
 
 // Interaction events
-
-//
-
-var canvas = scene.getCanvas();
-
 var translate = -200;
 var x = 0;
 var y = 0;
 var angle = 0;
 key('c', function(){
-    scene.getNode("myRotate", function (myRotate) {
-        myRotate.setAngle(angle += 0.5);
-    });
+    for (i = 0; i < scenes.length; i++){
+        canvas_id = i+1;
+        if($("#canvas-" + canvas_id).is(":visible")){
+            scenes[i].getNode("myRotate", function (myRotate) {
+            myRotate.setAngle(angle += 0.5);
+        });
+        }
+    }
+    
 });
 
 
